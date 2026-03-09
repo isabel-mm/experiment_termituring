@@ -398,18 +398,6 @@ with st.form(key=f"evaluation_form_{current_index}"):
             0, 2, 1, key=f"B_clarity_{current_index}"
         )
 
-        st.markdown(
-            """
-            <div class="scale-box">
-            <b>Scale guide</b><br>
-            - <b>0</b> = poor / inadequate<br>
-            - <b>1</b> = acceptable / partially adequate<br>
-            - <b>2</b> = good / fully adequate
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
     st.divider()
 
     preference = st.radio(
