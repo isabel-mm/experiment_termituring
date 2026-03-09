@@ -249,16 +249,7 @@ with st.form(key=f"evaluation_form_{current_index}"):
             "How clear and well formulated is Definition B?",
             0, 2, 1, key=f"B_clarity_{current_index}"
         )
-
-        st.markdown(
-            """
-**Scale guide**
-- **0** = poor / inadequate
-- **1** = acceptable / partially adequate
-- **2** = good / fully adequate
-"""
-        )
-
+        
     st.divider()
 
     preference = st.radio(
