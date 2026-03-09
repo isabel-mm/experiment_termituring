@@ -4,7 +4,7 @@ import random
 import pandas as pd
 from pathlib import Path
 
-DATA_FILE = "en_termituring_RAG_v2.json"
+DATA_FILE = "data.json"
 MAIN_KEY = "corpus_linguistics_terminology_experiment"
 
 st.set_page_config(page_title="Terminology Evaluation", layout="wide")
