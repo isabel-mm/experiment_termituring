@@ -2,7 +2,6 @@ import streamlit as st
 import json
 import random
 import pandas as pd
-from pathlib import Path
 
 DATA_FILE = "data.json"
 MAIN_KEY = "corpus_linguistics_terminology_experiment"
@@ -17,7 +16,6 @@ st.title("Terminological Definition Evaluation")
 
 @st.cache_data
 def load_terms():
-
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -25,19 +23,15 @@ def load_terms():
 
     for block in data[MAIN_KEY]:
         for item in block["terms"]:
-
             if item.get("status") == "done":
-
-                ai = item.get("ai_definition","").strip()
-                human = item.get("human_definition","").strip()
+                ai = item.get("ai_definition", "").strip()
+                human = item.get("human_definition", "").strip()
 
                 if ai and human:
-
                     pair = [
                         ("A", ai, "AI"),
                         ("B", human, "Human")
                     ]
-
                     random.shuffle(pair)
 
                     pairs.append({
@@ -53,6 +47,10 @@ def load_terms():
 
 terms = load_terms()
 
+if not terms:
+    st.error("No valid definition pairs were found in the JSON file.")
+    st.stop()
+
 # ----------------------------
 # SESSION STATE
 # ----------------------------
@@ -66,13 +64,58 @@ if "responses" not in st.session_state:
 if "annotator" not in st.session_state:
     st.session_state.annotator = ""
 
-
 # ----------------------------
-# ANNOTATOR ID
+# WELCOME SCREEN
 # ----------------------------
 
 if st.session_state.annotator == "":
-    st.session_state.annotator = st.text_input("Annotator ID")
+
+    st.header("Welcome")
+
+    st.markdown("""
+This study focuses on the evaluation of specialised definitions in corpus linguistics.
+
+You will be shown a series of **terms** together with **two alternative definitions** for each term.
+
+Your task is to assess each definition independently according to several criteria.
+
+### For each term:
+- Read both definitions carefully.
+- Evaluate **Definition A** and **Definition B** separately.
+- Indicate which definition you would prefer in a specialised glossary.
+- You may optionally add a brief comment.
+
+### Evaluation criteria:
+**Conceptual adequacy**  
+Does the definition correctly capture the concept?
+
+**Completeness**  
+Does the definition include the main conceptual properties?
+
+**Terminological precision**  
+Is the formulation technically precise and appropriate for a specialised context?
+
+**Clarity**  
+Is the definition clearly written and easy to understand?
+
+### Scoring system:
+- **0** = poor
+- **1** = acceptable
+- **2** = good
+
+The evaluation contains multiple terms and usually takes around **5–10 minutes**.
+
+Please enter your identifier below to begin. It can be your name or an alias. Don't worry, it will be properly anonymised.
+""")
+
+    annotator_input = st.text_input("Annotator ID")
+
+    if st.button("Start evaluation"):
+        if annotator_input.strip():
+            st.session_state.annotator = annotator_input.strip()
+            st.rerun()
+        else:
+            st.warning("Please enter an Annotator ID.")
 
     st.stop()
 
@@ -82,13 +125,18 @@ annotator = st.session_state.annotator
 # END CONDITION
 # ----------------------------
 
-if st.session_state.index >= len(terms):
+total_terms = len(terms)
+current_index = st.session_state.index
+remaining = total_terms - current_index
 
+if current_index >= total_terms:
     st.success("Evaluation finished!")
 
     df = pd.DataFrame(st.session_state.responses)
-
     csv = df.to_csv(index=False)
+
+    st.write(f"**Annotator:** {annotator}")
+    st.write(f"**Completed items:** {len(df)}")
 
     st.download_button(
         "Download results CSV",
@@ -97,17 +145,29 @@ if st.session_state.index >= len(terms):
         mime="text/csv"
     )
 
-    st.write(df)
-
+    st.dataframe(df, use_container_width=True)
     st.stop()
+
+# ----------------------------
+# PROGRESS INFO
+# ----------------------------
+
+completed = current_index
+progress_value = completed / total_terms if total_terms > 0 else 0
+
+st.write(f"**Annotator:** {annotator}")
+st.write(f"**Completed:** {completed} / {total_terms}")
+st.write(f"**Remaining:** {remaining}")
+st.progress(progress_value)
 
 # ----------------------------
 # CURRENT TERM
 # ----------------------------
 
-item = terms[st.session_state.index]
+item = terms[current_index]
 
 st.header(f"Term: {item['term']}")
+st.caption(f"Item {current_index + 1} of {total_terms}")
 
 col1, col2 = st.columns(2)
 
@@ -122,58 +182,61 @@ with col2:
 st.divider()
 
 # ----------------------------
-# SCORING
+# FORM
 # ----------------------------
 
-st.subheader("Evaluate Definition A")
+with st.form(key=f"evaluation_form_{current_index}"):
 
-A_adequacy = st.slider("Conceptual adequacy (A)", 0, 2)
-A_completeness = st.slider("Completeness (A)", 0, 2)
-A_precision = st.slider("Terminological precision (A)", 0, 2)
-A_clarity = st.slider("Clarity (A)", 0, 2)
+    st.subheader("Evaluate Definition A")
+    A_adequacy = st.slider("Conceptual adequacy (A)", 0, 2, 1, key=f"A_adequacy_{current_index}")
+    A_completeness = st.slider("Completeness (A)", 0, 2, 1, key=f"A_completeness_{current_index}")
+    A_precision = st.slider("Terminological precision (A)", 0, 2, 1, key=f"A_precision_{current_index}")
+    A_clarity = st.slider("Clarity (A)", 0, 2, 1, key=f"A_clarity_{current_index}")
 
-st.subheader("Evaluate Definition B")
+    st.subheader("Evaluate Definition B")
+    B_adequacy = st.slider("Conceptual adequacy (B)", 0, 2, 1, key=f"B_adequacy_{current_index}")
+    B_completeness = st.slider("Completeness (B)", 0, 2, 1, key=f"B_completeness_{current_index}")
+    B_precision = st.slider("Terminological precision (B)", 0, 2, 1, key=f"B_precision_{current_index}")
+    B_clarity = st.slider("Clarity (B)", 0, 2, 1, key=f"B_clarity_{current_index}")
 
-B_adequacy = st.slider("Conceptual adequacy (B)", 0, 2)
-B_completeness = st.slider("Completeness (B)", 0, 2)
-B_precision = st.slider("Terminological precision (B)", 0, 2)
-B_clarity = st.slider("Clarity (B)", 0, 2)
+    preference = st.radio(
+        "Which definition would you prefer in a specialised glossary?",
+        ["A", "B", "Equivalent"],
+        key=f"preference_{current_index}"
+    )
 
-preference = st.radio(
-    "Which definition would you prefer in a glossary?",
-    ["A", "B", "Equivalent"]
-)
+    comment = st.text_area("Optional comment", key=f"comment_{current_index}")
 
-comment = st.text_area("Optional comment")
+    submitted = st.form_submit_button("Save & Next")
 
 # ----------------------------
 # SAVE
 # ----------------------------
 
-if st.button("Save & Next"):
+if submitted:
+    already_saved_terms = {r["term"] for r in st.session_state.responses}
 
-    st.session_state.responses.append({
+    if item["term"] not in already_saved_terms:
+        st.session_state.responses.append({
+            "annotator": annotator,
+            "term": item["term"],
 
-        "annotator": annotator,
-        "term": item["term"],
+            "A_adequacy": A_adequacy,
+            "A_completeness": A_completeness,
+            "A_precision": A_precision,
+            "A_clarity": A_clarity,
 
-        "A_adequacy": A_adequacy,
-        "A_completeness": A_completeness,
-        "A_precision": A_precision,
-        "A_clarity": A_clarity,
+            "B_adequacy": B_adequacy,
+            "B_completeness": B_completeness,
+            "B_precision": B_precision,
+            "B_clarity": B_clarity,
 
-        "B_adequacy": B_adequacy,
-        "B_completeness": B_completeness,
-        "B_precision": B_precision,
-        "B_clarity": B_clarity,
+            "preference": preference,
+            "comment": comment,
 
-        "preference": preference,
-        "comment": comment,
-
-        "A_origin": item["A_origin"],
-        "B_origin": item["B_origin"]
-
-    })
+            "A_origin": item["A_origin"],
+            "B_origin": item["B_origin"]
+        })
 
     st.session_state.index += 1
     st.rerun()
