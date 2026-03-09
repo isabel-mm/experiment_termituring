@@ -165,11 +165,7 @@ if current_index >= total_terms:
     
     st.markdown(
     """
-    Please download your results and send them to:
-    
-    **isabel.moyano@uca.es**
-    
-    with the subject line: **TERMITURING RESULTS**
+    Please download your results and send them to: **isabel.moyano@uca.es** with the subject line: **TERMITURING RESULTS**
     """
     )
     
