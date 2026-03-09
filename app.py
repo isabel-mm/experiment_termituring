@@ -205,26 +205,72 @@ with st.form(key=f"evaluation_form_{current_index}"):
         st.write(item["A"])
 
         st.markdown("**Evaluate Definition A**")
-        A_adequacy = st.slider("Conceptual adequacy (A)", 0, 2, 1, key=f"A_adequacy_{current_index}")
-        A_completeness = st.slider("Completeness (A)", 0, 2, 1, key=f"A_completeness_{current_index}")
-        A_precision = st.slider("Terminological precision (A)", 0, 2, 1, key=f"A_precision_{current_index}")
-        A_clarity = st.slider("Clarity (A)", 0, 2, 1, key=f"A_clarity_{current_index}")
+        st.caption("Use the scale 0–2, where 0 = poor, 1 = acceptable, and 2 = good.")
+
+        A_adequacy = st.slider(
+            "To what extent does Definition A correctly capture the concept?",
+            0, 2, 1, key=f"A_adequacy_{current_index}"
+        )
+        A_completeness = st.slider(
+            "To what extent does Definition A include the main conceptual properties?",
+            0, 2, 1, key=f"A_completeness_{current_index}"
+        )
+        A_precision = st.slider(
+            "How terminologically precise is Definition A for a specialised context?",
+            0, 2, 1, key=f"A_precision_{current_index}"
+        )
+        A_clarity = st.slider(
+            "How clear and well formulated is Definition A?",
+            0, 2, 1, key=f"A_clarity_{current_index}"
+        )
+
+        st.markdown(
+            """
+**Scale guide**
+- **0** = poor / inadequate
+- **1** = acceptable / partially adequate
+- **2** = good / fully adequate
+"""
+        )
 
     with col2:
         st.subheader("Definition B")
         st.write(item["B"])
 
         st.markdown("**Evaluate Definition B**")
-        B_adequacy = st.slider("Conceptual adequacy (B)", 0, 2, 1, key=f"B_adequacy_{current_index}")
-        B_completeness = st.slider("Completeness (B)", 0, 2, 1, key=f"B_completeness_{current_index}")
-        B_precision = st.slider("Terminological precision (B)", 0, 2, 1, key=f"B_precision_{current_index}")
-        B_clarity = st.slider("Clarity (B)", 0, 2, 1, key=f"B_clarity_{current_index}")
+        st.caption("Use the scale 0–2, where 0 = poor, 1 = acceptable, and 2 = good.")
+
+        B_adequacy = st.slider(
+            "To what extent does Definition B correctly capture the concept?",
+            0, 2, 1, key=f"B_adequacy_{current_index}"
+        )
+        B_completeness = st.slider(
+            "To what extent does Definition B include the main conceptual properties?",
+            0, 2, 1, key=f"B_completeness_{current_index}"
+        )
+        B_precision = st.slider(
+            "How terminologically precise is Definition B for a specialised context?",
+            0, 2, 1, key=f"B_precision_{current_index}"
+        )
+        B_clarity = st.slider(
+            "How clear and well formulated is Definition B?",
+            0, 2, 1, key=f"B_clarity_{current_index}"
+        )
+
+        st.markdown(
+            """
+**Scale guide**
+- **0** = poor / inadequate
+- **1** = acceptable / partially adequate
+- **2** = good / fully adequate
+"""
+        )
 
     st.divider()
 
     preference = st.radio(
         "Which definition would you include in a specialised glossary?",
-        ["A", "B", "Equivalent"],
+        ["A", "B"],
         key=f"preference_{current_index}"
     )
 
