@@ -119,8 +119,8 @@ Is the definition clearly written and easy to understand?
 
 The evaluation contains multiple terms and usually takes around **5–10 minutes**.
 
-Thank you again for your participation 🌿  
-Please enter your identifier below to begin.
+Thank you again for your participation! 🌿  
+Please enter your identifier below to begin. You may include your name or an alias. Don't, worry, it will be properly anonymised.
 """)
 
     annotator_input = st.text_input("Annotator ID")
