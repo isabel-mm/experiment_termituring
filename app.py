@@ -8,6 +8,19 @@ MAIN_KEY = "corpus_linguistics_terminology_experiment"
 
 st.set_page_config(page_title="Terminology Evaluation", layout="wide")
 
+# ----------------------------
+# FORCE SCROLL TO TOP
+# ----------------------------
+
+st.markdown(
+    """
+    <script>
+        window.scrollTo(0, 0);
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("Terminological Definition Evaluation")
 
 # ----------------------------
@@ -105,7 +118,7 @@ Is the definition clearly written and easy to understand?
 
 The evaluation contains multiple terms and usually takes around **5–10 minutes**.
 
-Please enter your identifier below to begin. It can be your name or an alias. Don't worry, it will be properly anonymised.
+Please enter your identifier below to begin.
 """)
 
     annotator_input = st.text_input("Annotator ID")
