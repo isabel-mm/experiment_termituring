@@ -185,7 +185,7 @@ if "annotator" not in st.session_state:
 
 if st.session_state.annotator == "":
 
-    st.header("Welcome! 💜")
+    st.header("Welcome!")
 
     st.markdown(
         """
