@@ -9,11 +9,113 @@ MAIN_KEY = "corpus_linguistics_terminology_experiment"
 st.set_page_config(page_title="Terminology Evaluation", layout="wide")
 
 # ----------------------------
-# FORCE SCROLL TO TOP
+# CUSTOM STYLES
 # ----------------------------
 
 st.markdown(
     """
+    <style>
+    :root {
+        --purple-main: #7c3aed;
+        --purple-soft: #f3e8ff;
+        --pink-soft: #fdf2f8;
+        --pink-border: #f9a8d4;
+        --text-dark: #2d1b3d;
+        --muted: #6b7280;
+    }
+
+    /* Scroll to top on rerun */
+    html {
+        scroll-behavior: auto;
+    }
+
+    /* General accents */
+    .stProgress > div > div > div > div {
+        background-color: var(--purple-main);
+    }
+
+    /* Buttons */
+    .stButton > button, .stDownloadButton > button, div[data-testid="stFormSubmitButton"] button {
+        background-color: var(--purple-main);
+        color: white;
+        border-radius: 0.6rem;
+        border: none;
+        font-weight: 600;
+    }
+
+    .stButton > button:hover, .stDownloadButton > button:hover, div[data-testid="stFormSubmitButton"] button:hover {
+        background-color: #6d28d9;
+        color: white;
+    }
+
+    /* Radio */
+    div[role="radiogroup"] label {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    /* Captions / muted text */
+    .custom-muted {
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    /* Term box */
+    .term-box {
+        padding: 1rem 1.2rem;
+        border: 1px solid #d8b4fe;
+        border-radius: 0.9rem;
+        background-color: var(--purple-soft);
+        margin-bottom: 1rem;
+    }
+
+    .term-item {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .term-title {
+        color: var(--text-dark);
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Definition boxes */
+    .def-box {
+        padding: 1rem 1rem 0.8rem 1rem;
+        border: 1px solid var(--pink-border);
+        border-radius: 0.9rem;
+        background-color: var(--pink-soft);
+        margin-bottom: 0.8rem;
+        min-height: 180px;
+    }
+
+    .def-title {
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+    }
+
+    .scale-box {
+        padding: 0.8rem 1rem;
+        border-left: 4px solid var(--purple-main);
+        background-color: #faf5ff;
+        border-radius: 0.5rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .welcome-box {
+        padding: 1rem 1.2rem;
+        border: 1px solid #d8b4fe;
+        border-radius: 0.9rem;
+        background-color: #faf5ff;
+    }
+    </style>
+
     <script>
         window.scrollTo(0, 0);
     </script>
@@ -83,43 +185,41 @@ if "annotator" not in st.session_state:
 
 if st.session_state.annotator == "":
 
-    st.header("Welcome!")
+    st.header("Welcome! 💜")
 
-    st.markdown("""
-Thank you very much for taking part in this study! This experiment focuses on the evaluation of specialised definitions in **Corpus Linguistics**.
+    st.markdown(
+        """
+        <div class="welcome-box">
+        Thank you very much for taking part in this study! This experiment focuses on the evaluation of specialised definitions in <b>Corpus Linguistics</b>.<br><br>
 
-You will be shown a series of **terms** together with **two alternative definitions** for each term.  
-Your task is to assess each definition independently according to several criteria.
+        You will be shown a series of <b>terms</b> together with <b>two alternative definitions</b> for each term.
+        Your task is to assess each definition independently according to several criteria.<br><br>
 
-### 📝 For each term:
-- Read both definitions carefully.
-- Evaluate **Definition A** and **Definition B** separately.
-- Indicate which definition you would include in a specialised glossary.
-- You may optionally add a brief comment.
+        <b>📝 For each term:</b><br>
+        - Read both definitions carefully.<br>
+        - Evaluate <b>Definition A</b> and <b>Definition B</b> separately.<br>
+        - Indicate which definition you would include in a specialised glossary.<br>
+        - You may optionally add a brief comment.<br><br>
 
-### 🔎 Evaluation criteria:
-**Conceptual adequacy**  
-Does the definition correctly capture the concept?
+        <b>🔎 Evaluation criteria:</b><br>
+        <b>Conceptual adequacy</b>: Does the definition correctly capture the concept?<br>
+        <b>Completeness</b>: Does the definition include the main conceptual properties?<br>
+        <b>Terminological precision</b>: Is the formulation technically precise and appropriate for a specialised context?<br>
+        <b>Clarity</b>: Is the definition clearly written and easy to understand?<br><br>
 
-**Completeness**  
-Does the definition include the main conceptual properties?
+        <b>📊 Scoring system:</b><br>
+        - <b>0</b> = poor<br>
+        - <b>1</b> = acceptable<br>
+        - <b>2</b> = good<br><br>
 
-**Terminological precision**  
-Is the formulation technically precise and appropriate for a specialised context?
+        The evaluation contains multiple terms and usually takes around <b>5–10 minutes</b>.<br><br>
 
-**Clarity**  
-Is the definition clearly written and easy to understand?
-
-### 📊 Scoring system:
-- **0** = poor
-- **1** = acceptable
-- **2** = good
-
-The evaluation contains multiple terms and usually takes around **5–10 minutes**.
-
-Thank you again for your participation! 🌿  
-Please enter your identifier below to begin. You may include your name or an alias. Don't worry, it will be properly anonymised.
-""")
+        Thank you again for your participation 🌿<br>
+        Please enter your identifier below to begin. You may include your name or an alias. Don't worry, it will be properly anonymised.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     annotator_input = st.text_input("Annotator ID")
 
@@ -151,18 +251,18 @@ if current_index >= total_terms:
     st.markdown("## 🎉 Thank you for taking part in this experiment.")
 
     st.markdown(
-    """
+        """
 Your participation is greatly appreciated.
 
 **Did you know?**  
-Some of the definitions you evaluated were automatically generated by a **large language model (LLM)**, while others were written by human experts.  
+Some of the definitions you evaluated were automatically generated by a **large language model (LLM)**, while others were written by human experts.
 
 The purpose of this study is to investigate how automatically generated terminological definitions compare to human-written ones in the domain of **Corpus Linguistics**.
 """
     )
 
     st.markdown(
-    """
+        """
 Please download your results and send them to: **isabel.moyano@uca.es** with the subject line: **TERMITURING RESULTS**
 """
     )
@@ -214,19 +314,26 @@ with st.form(key=f"evaluation_form_{current_index}"):
 
     st.markdown(
         f"""
-<div style="padding: 1rem; border: 1px solid #d9d9d9; border-radius: 0.75rem; background-color: #f8f9fa; margin-bottom: 1rem;">
-    <div style="font-size: 0.9rem; color: #666;">Item {current_index + 1} of {total_terms}</div>
-    <div style="font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem;">Term: {item['term']}</div>
-</div>
-""",
+        <div class="term-box">
+            <div class="term-item">Item {current_index + 1} of {total_terms}</div>
+            <div class="term-title">Term: {item['term']}</div>
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Definition A")
-        st.write(item["A"])
+        st.markdown(
+            f"""
+            <div class="def-box">
+                <div class="def-title">Definition A</div>
+                <div>{item['A']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.markdown("**Evaluate Definition A**")
         st.caption("Use the scale 0–2, where 0 = poor, 1 = acceptable, and 2 = good.")
@@ -248,9 +355,28 @@ with st.form(key=f"evaluation_form_{current_index}"):
             0, 2, 1, key=f"A_clarity_{current_index}"
         )
 
+        st.markdown(
+            """
+            <div class="scale-box">
+            <b>Scale guide</b><br>
+            - <b>0</b> = poor / inadequate<br>
+            - <b>1</b> = acceptable / partially adequate<br>
+            - <b>2</b> = good / fully adequate
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
     with col2:
-        st.subheader("Definition B")
-        st.write(item["B"])
+        st.markdown(
+            f"""
+            <div class="def-box">
+                <div class="def-title">Definition B</div>
+                <div>{item['B']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.markdown("**Evaluate Definition B**")
         st.caption("Use the scale 0–2, where 0 = poor, 1 = acceptable, and 2 = good.")
@@ -270,6 +396,18 @@ with st.form(key=f"evaluation_form_{current_index}"):
         B_clarity = st.slider(
             "How clear and well formulated is Definition B?",
             0, 2, 1, key=f"B_clarity_{current_index}"
+        )
+
+        st.markdown(
+            """
+            <div class="scale-box">
+            <b>Scale guide</b><br>
+            - <b>0</b> = poor / inadequate<br>
+            - <b>1</b> = acceptable / partially adequate<br>
+            - <b>2</b> = good / fully adequate
+            </div>
+            """,
+            unsafe_allow_html=True
         )
 
     st.divider()
