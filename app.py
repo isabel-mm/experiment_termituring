@@ -148,6 +148,16 @@ if current_index >= total_terms:
     df = pd.DataFrame(st.session_state.responses)
     csv = df.to_csv(index=False)
 
+    st.markdown("## Thank you for taking part in this experiment.")
+    st.markdown(
+        """
+Please send your results to **isabel.moyano@uca.es**  
+with the subject line:
+
+**TERMITURING RESULTS**
+"""
+    )
+
     st.write(f"**Annotator:** {annotator}")
     st.write(f"**Completed items:** {len(df)}")
 
@@ -182,38 +192,38 @@ item = terms[current_index]
 st.header(f"Term: {item['term']}")
 st.caption(f"Item {current_index + 1} of {total_terms}")
 
-col1, col2 = st.columns(2)
-
-with col1:
-    st.subheader("Definition A")
-    st.write(item["A"])
-
-with col2:
-    st.subheader("Definition B")
-    st.write(item["B"])
-
-st.divider()
-
 # ----------------------------
 # FORM
 # ----------------------------
 
 with st.form(key=f"evaluation_form_{current_index}"):
 
-    st.subheader("Evaluate Definition A")
-    A_adequacy = st.slider("Conceptual adequacy (A)", 0, 2, 1, key=f"A_adequacy_{current_index}")
-    A_completeness = st.slider("Completeness (A)", 0, 2, 1, key=f"A_completeness_{current_index}")
-    A_precision = st.slider("Terminological precision (A)", 0, 2, 1, key=f"A_precision_{current_index}")
-    A_clarity = st.slider("Clarity (A)", 0, 2, 1, key=f"A_clarity_{current_index}")
+    col1, col2 = st.columns(2)
 
-    st.subheader("Evaluate Definition B")
-    B_adequacy = st.slider("Conceptual adequacy (B)", 0, 2, 1, key=f"B_adequacy_{current_index}")
-    B_completeness = st.slider("Completeness (B)", 0, 2, 1, key=f"B_completeness_{current_index}")
-    B_precision = st.slider("Terminological precision (B)", 0, 2, 1, key=f"B_precision_{current_index}")
-    B_clarity = st.slider("Clarity (B)", 0, 2, 1, key=f"B_clarity_{current_index}")
+    with col1:
+        st.subheader("Definition A")
+        st.write(item["A"])
+
+        st.markdown("**Evaluate Definition A**")
+        A_adequacy = st.slider("Conceptual adequacy (A)", 0, 2, 1, key=f"A_adequacy_{current_index}")
+        A_completeness = st.slider("Completeness (A)", 0, 2, 1, key=f"A_completeness_{current_index}")
+        A_precision = st.slider("Terminological precision (A)", 0, 2, 1, key=f"A_precision_{current_index}")
+        A_clarity = st.slider("Clarity (A)", 0, 2, 1, key=f"A_clarity_{current_index}")
+
+    with col2:
+        st.subheader("Definition B")
+        st.write(item["B"])
+
+        st.markdown("**Evaluate Definition B**")
+        B_adequacy = st.slider("Conceptual adequacy (B)", 0, 2, 1, key=f"B_adequacy_{current_index}")
+        B_completeness = st.slider("Completeness (B)", 0, 2, 1, key=f"B_completeness_{current_index}")
+        B_precision = st.slider("Terminological precision (B)", 0, 2, 1, key=f"B_precision_{current_index}")
+        B_clarity = st.slider("Clarity (B)", 0, 2, 1, key=f"B_clarity_{current_index}")
+
+    st.divider()
 
     preference = st.radio(
-        "Which definition would you prefer in a specialised glossary?",
+        "Which definition would you include in a specialised glossary?",
         ["A", "B", "Equivalent"],
         key=f"preference_{current_index}"
     )
