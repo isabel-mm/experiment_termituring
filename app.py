@@ -83,12 +83,10 @@ if "annotator" not in st.session_state:
 
 if st.session_state.annotator == "":
 
-    st.header("👋 Welcome")
+    st.header("Welcome!")
 
     st.markdown("""
-Thank you very much for taking part in this study.
-
-This experiment focuses on the evaluation of specialised definitions in **Corpus Linguistics**.
+Thank you very much for taking part in this study! This experiment focuses on the evaluation of specialised definitions in **Corpus Linguistics**.
 
 You will be shown a series of **terms** together with **two alternative definitions** for each term.  
 Your task is to assess each definition independently according to several criteria.
