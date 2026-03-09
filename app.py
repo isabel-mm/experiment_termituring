@@ -83,22 +83,23 @@ if "annotator" not in st.session_state:
 
 if st.session_state.annotator == "":
 
-    st.header("Welcome")
+    st.header("👋 Welcome")
 
     st.markdown("""
-This study focuses on the evaluation of specialised definitions in corpus linguistics.
+Thank you very much for taking part in this study.
 
-You will be shown a series of **terms** together with **two alternative definitions** for each term.
+This experiment focuses on the evaluation of specialised definitions in **Corpus Linguistics**.
 
+You will be shown a series of **terms** together with **two alternative definitions** for each term.  
 Your task is to assess each definition independently according to several criteria.
 
-### For each term:
+### 📝 For each term:
 - Read both definitions carefully.
 - Evaluate **Definition A** and **Definition B** separately.
-- Indicate which definition you would prefer in a specialised glossary.
+- Indicate which definition you would include in a specialised glossary.
 - You may optionally add a brief comment.
 
-### Evaluation criteria:
+### 🔎 Evaluation criteria:
 **Conceptual adequacy**  
 Does the definition correctly capture the concept?
 
@@ -111,13 +112,14 @@ Is the formulation technically precise and appropriate for a specialised context
 **Clarity**  
 Is the definition clearly written and easy to understand?
 
-### Scoring system:
+### 📊 Scoring system:
 - **0** = poor
 - **1** = acceptable
 - **2** = good
 
 The evaluation contains multiple terms and usually takes around **5–10 minutes**.
 
+Thank you again for your participation 🌿  
 Please enter your identifier below to begin.
 """)
 
@@ -148,7 +150,7 @@ if current_index >= total_terms:
     df = pd.DataFrame(st.session_state.responses)
     csv = df.to_csv(index=False)
 
-    st.markdown("## Thank you for taking part in this experiment.")
+    st.markdown("## 🎉 Thank you for taking part in this experiment.")
     st.markdown(
         """
 Please send your results to **isabel.moyano@uca.es**  
@@ -222,15 +224,6 @@ with st.form(key=f"evaluation_form_{current_index}"):
         A_clarity = st.slider(
             "How clear and well formulated is Definition A?",
             0, 2, 1, key=f"A_clarity_{current_index}"
-        )
-
-        st.markdown(
-            """
-**Scale guide**
-- **0** = poor / inadequate
-- **1** = acceptable / partially adequate
-- **2** = good / fully adequate
-"""
         )
 
     with col2:
